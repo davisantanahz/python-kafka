@@ -1,0 +1,41 @@
+---
+apiVersion: "extensions/v1beta1"
+kind: "Deployment"
+metadata:
+  name: "zookeeper"
+  namespace: "default"
+  labels:
+    app: "zookeeper"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "zookeeper"
+  template:
+    metadata:
+      labels:
+        app: "zookeeper"
+    spec:
+      containers:
+      - name: "zookeeper"
+        image: "wurstmeister/zookeeper"
+---
+apiVersion: "autoscaling/v2beta1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "zookeeper-hpa"
+  namespace: "default"
+  labels:
+    app: "zookeeper"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "zookeeper"
+    apiVersion: "apps/v1beta1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      targetAverageUtilization: 80
