@@ -24,7 +24,7 @@ metadata:
   labels:
     app: "python"
 data:
-  HOST_KAFKA: "35.202.97.31"
+  HOST_KAFKA: "35.238.211.44"
 ---
 apiVersion: "extensions/v1beta1"
 kind: "Deployment"

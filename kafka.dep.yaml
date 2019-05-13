@@ -19,7 +19,7 @@ spec:
         - name: KAFKA_ADVERTISED_PORT
           value: "9092"
         - name: KAFKA_ADVERTISED_HOST_NAME
-          value: $SERVICE_EXTERNAL_IP
+          value: 35.202.97.31
         - name: KAFKA_ZOOKEEPER_CONNECT
           value: 104.154.42.122:2181
         - name: KAFKA_BROKER_ID
