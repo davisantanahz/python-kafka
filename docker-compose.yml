@@ -22,7 +22,7 @@ services:
     depends_on:
       - "zookeeper"
   python:
-    image: python-kafka:0.2
+    image: davisantana/python-kafka:0.2 python-kafka:0.2
     ports:
       - 80:5000
     environment: 

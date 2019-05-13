@@ -1,0 +1,62 @@
+---
+apiVersion: "v1"
+kind: "Namespace"
+metadata:
+  name: "chapter-jvm"
+---
+apiVersion: "v1"
+kind: "ConfigMap"
+metadata:
+  name: "nginx-1-config"
+  namespace: "chapter-jvm"
+  labels:
+    app: "nginx-1"
+data:
+  HOST_KAFKA: "35.202.97.31"
+---
+apiVersion: "extensions/v1beta1"
+kind: "Deployment"
+metadata:
+  name: "nginx-1"
+  namespace: "chapter-jvm"
+  labels:
+    app: "nginx-1"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "nginx-1"
+  template:
+    metadata:
+      labels:
+        app: "nginx-1"
+    spec:
+      containers:
+      - name: "chapter-jvm-kafka"
+        image: "davisantana/chapter-jvm-kafka:0.3"
+        env:
+        - name: "HOST_KAFKA"
+          valueFrom:
+            configMapKeyRef:
+              key: "HOST_KAFKA"
+              name: "nginx-1-config"
+---
+apiVersion: "autoscaling/v2beta1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "nginx-1-hpa"
+  namespace: "chapter-jvm"
+  labels:
+    app: "nginx-1"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "nginx-1"
+    apiVersion: "apps/v1beta1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      targetAverageUtilization: 80
