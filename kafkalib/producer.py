@@ -1,9 +1,11 @@
+import os
 from kafka import KafkaProducer
 import json 
 
 class Producer():
     def __init__(self):
-        producer = KafkaProducer(bootstrap_servers='kafka:9092')
+        host =  os.getenv('HOST_KAFKA')
+        producer = KafkaProducer(bootstrap_servers= host + ':9092')
         producer.send('test-topic', b'some_message_bytes')
         producer.flush()
         producer.close()

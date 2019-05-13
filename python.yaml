@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: wpython
+  labels:
+    app: web_python
+spec:
+  containers:m
+  - name: wpython
+    image: davisantana/python-kafka
+    ports:
+    - containerPort: 80
